@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_niletech_trading_niletech_trading,niletech_trading.niletech_trading,model_niletech_trading_niletech_trading,base.group_user,1,1,1,1

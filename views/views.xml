@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="niletech_trading.list">
+      <field name="name">niletech_trading list</field>
+      <field name="model">niletech_trading.niletech_trading</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="niletech_trading.action_window">
+      <field name="name">niletech_trading window</field>
+      <field name="res_model">niletech_trading.niletech_trading</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="niletech_trading.action_server">
+      <field name="name">niletech_trading server</field>
+      <field name="model_id" ref="model_niletech_trading_niletech_trading"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="niletech_trading" id="niletech_trading.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="niletech_trading.menu_1" parent="niletech_trading.menu_root"/>
+    <menuitem name="Menu 2" id="niletech_trading.menu_2" parent="niletech_trading.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="niletech_trading.menu_1_list" parent="niletech_trading.menu_1"
+              action="niletech_trading.action_window"/>
+    <menuitem name="Server to list" id="niletech_trading" parent="niletech_trading.menu_2"
+              action="niletech_trading.action_server"/>
+-->
+  </data>
+</odoo>
