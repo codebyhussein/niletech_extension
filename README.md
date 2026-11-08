@@ -103,13 +103,6 @@ Example:
 ```md
 ![Product form customization](static/description/product_form.png)
 ![Sales order delivery section](static/description/sales_order_delivery.png)
-```
-
-You can also place images like this in the module folder and update the paths as needed:
-
-- `static/description/product_form.png`
-- `static/description/sales_order_delivery.png`
-- `static/description/task_3_delivery_information.png`
 
 ## Module Structure
 
@@ -172,3 +165,4 @@ This project demonstrates recommended Odoo customization practices, including:
 The Niletech Custom Module is a practical example of how to extend Odoo with business-specific fields, validations, and custom views. It is designed to be reusable, readable, and easily expanded for future customizations in inventory, sales, purchasing, accounting, or HR.
 
 This project gives a solid foundation for building maintainable Odoo custom modules that align with real-world business needs.
+```
