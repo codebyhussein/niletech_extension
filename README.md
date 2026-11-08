@@ -1,31 +1,38 @@
 # Niletech Custom Module
 
-This module is a custom Odoo development project created to extend business functionality in a clean, maintainable, and reusable way. It is designed not only for product management, but also to support future customizations in other Odoo areas such as Inventory, Sales, Purchase, Accounting, or HR.
+A custom Odoo module designed to extend standard business processes with additional product and sales information, validation rules, and better user experience in the form views.
 
-The project demonstrates how custom logic, validation rules, computed fields, and UI customizations can be added to Odoo without breaking the standard behavior of the base application.
+This project is focused on practical business customization and demonstrates how to add task-based enhancements to Odoo without modifying the core application behavior.
 
-## Project goal
+## Overview
 
-The main goal of this module is to improve business processes by adding custom data, automated calculations, and validation rules to standard Odoo records.
+The module is structured to support multiple business improvements across product and sales workflows.
 
-This module can be extended in the future to support:
+It currently includes:
 
-- Inventory custom fields and stock controls
-- Sales and pricing logic
-- Purchase order tracking
-- Accounting and financial reporting
-- HR and employee-related data
-- Warehouse or logistics customization
+- Product technical and warranty information
+- Pricing and margin calculation logic
+- Delivery planning fields on sales orders
 
-## Current scope
+The goal is to provide useful business data directly inside Odoo forms while keeping the implementation clean, maintainable, and easy to expand.
 
-This module currently extends the Product form in two main tasks:
+## Project Goals
 
-### Task 1: Technical product information
+This module helps improve business operations by:
 
-This task adds fields for product technical and warranty information.
+- collecting richer product information
+- automating profit-related calculations
+- improving sales-order delivery tracking
+- enforcing business validation rules before saving or confirming records
+- keeping the custom logic organized by task and responsibility
 
-#### Included fields
+## Current Scope
+
+### Task 1: Technical Product Information
+
+This task adds technical fields to the Product form to improve product records and maintain data quality.
+
+#### Included Fields
 
 - Brand Name
 - Product Origin
@@ -33,7 +40,7 @@ This task adds fields for product technical and warranty information.
 - Is Under Warranty
 - Technical Description
 
-#### Validation rules
+#### Validation Rules
 
 - Warranty period cannot be negative.
 - If the product is under warranty, the warranty period must be greater than zero.
@@ -41,87 +48,127 @@ This task adds fields for product technical and warranty information.
 
 #### Purpose
 
-This helps the business maintain more complete product records and ensure consistency in product technical details.
+This ensures product information is complete, standardized, and suitable for operations, purchasing, and future reporting.
 
-### Task 2: Pricing analysis
+### Task 2: Pricing Analysis
 
-This task adds logic for product pricing and profitability analysis.
+This task adds logic for margin and pricing analysis on product records.
 
-#### Included fields
+#### Included Fields
 
 - Profit Margin (%)
 - Expected Selling Price
 - Profit Amount
 
-#### Calculation logic
+#### Calculation Logic
 
 - Expected Selling Price = Standard Price + (Standard Price x Profit Margin / 100)
 - Profit Amount = Expected Selling Price - Standard Price
 
-#### Validation rules
+#### Validation Rules
 
 - Profit amount cannot be negative.
 
 #### Purpose
 
-This allows users to analyze pricing strategy and ensure that the product margin remains valid and realistic.
+This helps calculate realistic selling prices and monitor the profitability of products.
 
-## Future-ready design
+### Task 3: Delivery Information
 
-The module follows a standard Odoo customization structure that can be reused for other modules. The same pattern can be applied to other models when creating additional customizations.
+This task adds delivery-related details to the Sales Order form to support logistics and order management.
 
-Typical future customizations may include:
+#### Included Fields
 
-- Adding new fields to stock.picking or product.product
-- Creating computed values in inventory or sales records
-- Adding business validations to existing models
-- Customizing views to show important information in tabs or sections
-- Writing logic to automate workflows based on business rules
+- Customer Purchase Order
+- Expected Delivery Date
+- Delivery Priority
+- Requires Installation?
+- Special Delivery Instructions
 
-## Module structure
+#### Validation Rules
 
-- models/product_template_inherit.py
-  - custom fields
-  - constraints
+- Expected delivery date cannot be earlier than the order date.
+- A sales order cannot be confirmed without an expected delivery date.
+
+#### Purpose
+
+This improves fulfillment planning and ensures that delivery requirements are captured before confirmation.
+
+## Screenshot Gallery
+
+The module is designed to show key business data directly in Odoo forms. Add your screenshots in the `static/description/` folder and reference them below.
+
+Example:
+
+```md
+![Product form customization](static/description/product_form.png)
+![Sales order delivery section](static/description/sales_order_delivery.png)
+```
+
+You can also place images like this in the module folder and update the paths as needed:
+
+- `static/description/product_form.png`
+- `static/description/sales_order_delivery.png`
+- `static/description/task_3_delivery_information.png`
+
+## Module Structure
+
+- `models/product_template_inherit.py`
+  - custom field definitions
+  - validation logic
   - computed methods
-  - business logic
+  - business constraints
 
-- views/product_template_inherit_view.xml
-  - custom view inheritance
-  - tabs and form layout
+- `models/sale_order_inherit.py`
+  - delivery-related sales order fields
+  - validation logic for delivery date and confirmation flow
 
-- __manifest__.py
+- `views/product_template_inherit_view.xml`
+  - custom tabs and form layout for product information
+
+- `views/sale_order_inherit_view.xml`
+  - delivery information tab on the Sales Order form
+
+- `__manifest__.py`
   - module metadata
   - dependencies
   - data files
 
-## How this module works
+## How It Works
 
-The module inherits the standard Odoo product model and adds extra fields directly to the Product form. These custom fields are visible in dedicated tabs and are validated through Odoo constraints.
+The module inherits standard Odoo models and adds custom fields directly to existing forms. These fields are then validated using Odoo constraints and displayed in user-friendly tabs or sections.
 
-This keeps the original Odoo functionality intact while adding company-specific features needed for business operations.
+This approach keeps the base Odoo behavior intact while extending it with project-specific data and rules.
 
 ## Installation
 
 1. Copy the module folder into your Odoo custom addons directory.
-2. Update the addons list in Odoo.
-3. Install the module from the Apps menu.
-4. Open a product record and review the new sections in the form.
+2. Update the Odoo addons list.
+3. Restart the Odoo server.
+4. Install the module from the Apps menu.
+5. Open a Product or Sales Order record to review the customized sections.
 
-## Notes for developers
+## Usage
 
-This project is a good example of how to create custom Odoo modules in a clean, readable, and maintainable way.
+After installing the module:
 
-Best practices used here:
+- open a product record to review technical and pricing fields
+- set the required product information and validation values
+- open a sales order to enter delivery information
+- confirm the order only after required delivery data is provided
+
+## Developer Notes
+
+This project demonstrates recommended Odoo customization practices, including:
 
 - model inheritance instead of modifying core data directly
-- constraint validation for business rules
-- computed fields for automated values
-- view inheritance for UI customization
-- code organized by task and purpose
+- business rule validation with `@api.constrains`
+- computed fields for derived values
+- view inheritance for form customization
+- modular task-based organization for cleaner maintenance
 
 ## Summary
 
-This module is a foundation for custom Odoo enhancement work. It is currently focused on product-related fields, but it is intentionally structured so that future customizations can be added to other modules as needed.
+The Niletech Custom Module is a practical example of how to extend Odoo with business-specific fields, validations, and custom views. It is designed to be reusable, readable, and easily expanded for future customizations in inventory, sales, purchasing, accounting, or HR.
 
-Its purpose is simple: make Odoo more useful for real business needs while keeping the code organized, readable, and easy to extend.
+This project gives a solid foundation for building maintainable Odoo custom modules that align with real-world business needs.
