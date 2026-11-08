@@ -18,12 +18,13 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','product'],
+    'depends': ['base', 'product', 'sale_management'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/product_template_inherit_view.xml',
+        'views/sale_order_inherit_view.xml',
         # 'views/templates.xml',
     ],
     # only loaded in demonstration mode
@@ -31,4 +32,3 @@ Long description of module's purpose
         'demo/demo.xml',
     ],
 }
-
