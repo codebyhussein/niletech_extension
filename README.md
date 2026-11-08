@@ -1,168 +1,112 @@
-# Niletech Custom Module
+# NileTech Trading
 
-A custom Odoo module designed to extend standard business processes with additional product and sales information, validation rules, and better user experience in the form views.
+NileTech Trading is a custom Odoo module that extends product and sales order forms with additional business information, pricing calculations, and delivery controls.
 
-This project is focused on practical business customization and demonstrates how to add task-based enhancements to Odoo without modifying the core application behavior.
+The module uses Odoo model and view inheritance, adding project-specific functionality while leaving the standard Odoo source code unchanged.
 
-## Overview
+## Features
 
-The module is structured to support multiple business improvements across product and sales workflows.
+| Task | Area | What it adds |
+|---|---|---|
+| 1. Technical product information | Product form | Product brand, origin, warranty, and technical description |
+| 2. Pricing analysis | Product form | Profit margin, computed selling price, and computed profit |
+| 3. Delivery information | Sales Order form | Customer PO, delivery date and priority, installation, and delivery instructions |
 
-It currently includes:
+## Screenshots
 
-- Product technical and warranty information
-- Pricing and margin calculation logic
-- Delivery planning fields on sales orders
+### Product pricing analysis
 
-The goal is to provide useful business data directly inside Odoo forms while keeping the implementation clean, maintainable, and easy to expand.
+The product form shows the cost, profit margin, computed expected selling price, and computed profit amount.
 
-## Project Goals
+![Product form showing pricing analysis](static/description/product_form.png)
 
-This module helps improve business operations by:
+### Sales order delivery information
 
-- collecting richer product information
-- automating profit-related calculations
-- improving sales-order delivery tracking
-- enforcing business validation rules before saving or confirming records
-- keeping the custom logic organized by task and responsibility
+The Sales Order form includes a Delivery Information tab for capturing delivery requirements.
 
-## Current Scope
+![Sales Order form showing delivery information](static/description/sales_order_delivery.png)
+
+## Task Details
 
 ### Task 1: Technical Product Information
 
-This task adds technical fields to the Product form to improve product records and maintain data quality.
-
-#### Included Fields
+Adds a **Technical Information** tab to the Product form with:
 
 - Brand Name
 - Product Origin
-- Warranty Period
-- Is Under Warranty
+- Warranty Period (in months)
+- Is Under Warranty?
 - Technical Description
 
-#### Validation Rules
-
-- Warranty period cannot be negative.
-- If the product is under warranty, the warranty period must be greater than zero.
-- If the product is not under warranty, warranty period must be zero.
-
-#### Purpose
-
-This ensures product information is complete, standardized, and suitable for operations, purchasing, and future reporting.
+The warranty validation rules ensure that the period is not negative, is greater than zero when the product is under warranty, and is zero when it is not under warranty. The warranty period field is shown only when the product is marked as under warranty.
 
 ### Task 2: Pricing Analysis
 
-This task adds logic for margin and pricing analysis on product records.
+Adds a **Pricing Analysis** tab to the Product form with:
 
-#### Included Fields
-
+- Cost (standard price)
 - Profit Margin (%)
 - Expected Selling Price
 - Profit Amount
 
-#### Calculation Logic
+The expected selling price and profit amount are computed and stored:
 
-- Expected Selling Price = Standard Price + (Standard Price x Profit Margin / 100)
-- Profit Amount = Expected Selling Price - Standard Price
+- **Expected Selling Price** = Cost + (Cost × Profit Margin / 100)
+- **Profit Amount** = Expected Selling Price − Cost
 
-#### Validation Rules
-
-- Profit amount cannot be negative.
-
-#### Purpose
-
-This helps calculate realistic selling prices and monitor the profitability of products.
+The module rejects a negative profit amount.
 
 ### Task 3: Delivery Information
 
-This task adds delivery-related details to the Sales Order form to support logistics and order management.
-
-#### Included Fields
+Adds a **Delivery Information** tab to the Sales Order form with:
 
 - Customer Purchase Order
 - Expected Delivery Date
-- Delivery Priority
+- Delivery Priority (Normal, Urgent, or Very Urgent)
 - Requires Installation?
 - Special Delivery Instructions
 
-#### Validation Rules
-
-- Expected delivery date cannot be earlier than the order date.
-- A sales order cannot be confirmed without an expected delivery date.
-
-#### Purpose
-
-This improves fulfillment planning and ensures that delivery requirements are captured before confirmation.
-
-## Screenshot Gallery
-
-The module is designed to show key business data directly in Odoo forms. Add your screenshots in the `static/description/` folder and reference them below.
-
-Example:
-
-```md
-![Product form customization](static/description/product_form.png)
-![Sales order delivery section](static/description/sales_order_delivery.png)
+The expected delivery date cannot be earlier than the order date. An expected delivery date is also required before a quotation or sales order can be confirmed.
 
 ## Module Structure
 
-- `models/product_template_inherit.py`
-  - custom field definitions
-  - validation logic
-  - computed methods
-  - business constraints
+```text
+niletech_product_extension/
+├── models/
+│   ├── product_template_inherit.py
+│   └── sale_order_inherit.py
+├── views/
+│   ├── product_template_inherit_view.xml
+│   └── sale_order_inherit_view.xml
+├── static/
+│   └── description/
+│       ├── product_form.png
+│       └── sales_order_delivery.png
+├── __manifest__.py
+└── README.md
+```
 
-- `models/sale_order_inherit.py`
-  - delivery-related sales order fields
-  - validation logic for delivery date and confirmation flow
+## Requirements
 
-- `views/product_template_inherit_view.xml`
-  - custom tabs and form layout for product information
-
-- `views/sale_order_inherit_view.xml`
-  - delivery information tab on the Sales Order form
-
-- `__manifest__.py`
-  - module metadata
-  - dependencies
-  - data files
-
-## How It Works
-
-The module inherits standard Odoo models and adds custom fields directly to existing forms. These fields are then validated using Odoo constraints and displayed in user-friendly tabs or sections.
-
-This approach keeps the base Odoo behavior intact while extending it with project-specific data and rules.
+- Odoo 17
+- Odoo modules: `product` and `sale_management` (along with Odoo's `base` module)
 
 ## Installation
 
-1. Copy the module folder into your Odoo custom addons directory.
-2. Update the Odoo addons list.
+1. Copy `niletech_product_extension` into an Odoo custom addons directory.
+2. Ensure the custom addons directory is included in Odoo's `addons_path`.
 3. Restart the Odoo server.
-4. Install the module from the Apps menu.
-5. Open a Product or Sales Order record to review the customized sections.
+4. Update the Apps list and install **NileTech Trading**.
 
 ## Usage
 
-After installing the module:
+- Open a product to maintain its technical information and review pricing calculations.
+- Open a quotation or sales order and use the **Delivery Information** tab to enter delivery details.
+- Set an expected delivery date before confirming the quotation or order.
 
-- open a product record to review technical and pricing fields
-- set the required product information and validation values
-- open a sales order to enter delivery information
-- confirm the order only after required delivery data is provided
+## Development Notes
 
-## Developer Notes
-
-This project demonstrates recommended Odoo customization practices, including:
-
-- model inheritance instead of modifying core data directly
-- business rule validation with `@api.constrains`
-- computed fields for derived values
-- view inheritance for form customization
-- modular task-based organization for cleaner maintenance
-
-## Summary
-
-The Niletech Custom Module is a practical example of how to extend Odoo with business-specific fields, validations, and custom views. It is designed to be reusable, readable, and easily expanded for future customizations in inventory, sales, purchasing, accounting, or HR.
-
-This project gives a solid foundation for building maintainable Odoo custom modules that align with real-world business needs.
-```
+- Custom fields and business rules are defined in `models/`.
+- Form changes use inherited views in `views/`.
+- The screenshots are stored in `static/description/` and are referenced relative to this README.
+- Update the module after changing its Python or XML files.
